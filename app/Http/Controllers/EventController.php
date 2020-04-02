@@ -63,12 +63,14 @@ class EventController extends Controller
 	     * Try to initialize the MailChimp service
 	     */
         try {
-	        $mailchimp = new Mailchimp(env('MAILCHIMP_KEY'));
+			$mailchimp = new Mailchimp(env('MAILCHIMP_KEY'));
+			/* Fix */
+			$mailchimp->verify_ssl = false;
         } catch (\Exception $e) {
         	throw new \Error('Unable to initiate MailChimp service. ' . $e->getMessage());
         }
 
-	    // 1. Create new MailChimp audience list with name of the event and date
+		// 1. Create new MailChimp audience list with name of the event and date
 	    $list = $mailchimp->post('lists', [
 	    	'name' => $nameAndDate ,
 		    'contact' => [
@@ -91,7 +93,8 @@ class EventController extends Controller
 		    'email_type_option' => false,
 	    ]);
 
-        /*
+
+		/*
          * Validate this step worked
          */
 		if ( empty( $list ) || ! isset( $list['id'] ) ) {
