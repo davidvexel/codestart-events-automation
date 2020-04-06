@@ -8,7 +8,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use \DrewM\MailChimp\MailChimp;
 
-class EventController extends Controller
+class EventbriteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,16 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+	    /* List of timezones */
+	    $timezones = [
+		    'US/Alaska'   => "(GMT-09:00) Alaska",
+		    'US/Pacific'  => "(GMT-08:00) Pacific Time",
+		    'US/Mountain' => "(GMT-07:00) Mountain Time",
+		    'US/Central'  => "(GMT-06:00) Central Time",
+		    'US/Eastern'  => "(GMT-05:00) Eastern Time",
+	    ];
+
+	    return view('eventbrite', compact('timezones'));
     }
 
     /**
@@ -31,7 +40,9 @@ class EventController extends Controller
      */
     public function create(Request $request)
     {
-      //
+        $input = $request->except('_token');
+
+        dd($input);
     }
 
     /**
