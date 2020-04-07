@@ -20,7 +20,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ url('events') }}" method="POST">
+                    <form action="{{ url('mailchimp') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="name">Event Name</label>
