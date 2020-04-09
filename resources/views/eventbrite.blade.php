@@ -140,7 +140,13 @@
                                 @foreach($venues as $venue)
                                     <li class="list-group-item">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" name="venues[]" value="{{$venue['id']}},{{$venue['latitude']}},{{$venue['longitude']}}" id="{{$venue['id']}}">
+                                            <input
+                                                type="checkbox"
+                                                class="custom-control-input"
+                                                name="venues[]"
+                                                value="{{$venue['id']}}:{{$venue['latitude']}}:{{$venue['longitude']}}:{{$venue['address']['city']}}"
+                                                id="{{$venue['id']}}"
+                                            >
                                             <label class="custom-control-label" for="{{$venue['id']}}">{{ $venue['address']['localized_address_display'] }}</label>
                                         </div>
                                     </li>

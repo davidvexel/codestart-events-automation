@@ -68,7 +68,6 @@ class EventbriteController extends Controller
     public function create(Request $request)
     {
         $input = $request->except('_token');
-        $dateFormat = 'YYYY-MM-DDThh:mm:ssZ';
 
 	    /**
 	     * Create the dates
@@ -113,10 +112,12 @@ class EventbriteController extends Controller
 		    /**
 		     * Read the values comma delimited
 		     */
-	    	$venueValues = explode(',', $venue);
+	    	$venueValues = explode(':', $venue);
 	    	$venueId = $venueValues[0];
 	    	$latitude = $venueValues[1];
 	    	$longitude = $venueValues[2];
+	    	$city = $venueValues[3];
+
 		    $now = Carbon::now()->timestamp;
 
 		    /**
@@ -151,16 +152,15 @@ class EventbriteController extends Controller
 			     * Build arguments
 			     */
 			    $args = [
-				    'event.name.html'        => $input['name'],
-				    //'event.summary'          => $input['summary'],
-				    'event.description.html' => $input['description'],
+				    'event.name.html'        => $input['name'] . ' - ' . $city,
+				    'event.description.html' => $input['summary'],
 				    'event.start.utc'        => $startDate->tz('UTC')->toIso8601ZuluString(),
 				    'event.start.timezone'   => $timezonesResponse['timeZoneId'],
 				    'event.end.utc'          => $endDate->tz('UTC')->toIso8601ZuluString(),
 				    'event.end.timezone'     => $timezonesResponse['timeZoneId'],
 				    'event.currency'         => 'USD',
 				    'event.venue_id'         => $venueId,
-				    // event image
+				    'event.logo_id'          => '62366392', // hardcoded image
 			    ];
 
 			    /**
@@ -183,12 +183,43 @@ class EventbriteController extends Controller
 			    $event = json_decode($event->getBody()->getContents(), TRUE);
 
 			    /**
+			     * Crete the Event Description
+			     * @see https://www.eventbrite.com.br/platform/docs/event-description
+			     */
+			    $args = [
+			    	'modules' => [
+			    		[
+			    			'type' => 'text',
+						    'data' => [
+						    	'body' => [
+						    		'type' => 'text',
+								    'text' => $input['description'],
+								    'alignment' => 'left',
+							    ],
+						    ],
+					    ],
+				    ],
+				    'publish' => true,
+				    'purpose' => 'listing',
+			    ];
+
+			    try {
+				    $client->request( 'POST','events/' . $event['id'] . '/structured_content/1/', [
+					    'json' => $args,
+				    ]);
+			    } catch (\Exception $e) {
+				    throw new \Exception($e->getResponse()->getBody()->getContents());
+			    }
+
+			    /**
 			     * Setup args for ticket class
 			     */
 			    $args = [
 					'ticket_class.name'           => 'General',
 				    'ticket_class.quantity_total' => 50,
 				    'ticket_class.free'           => true,
+				    'ticket_class.has_pdf_ticket' => true,
+				    'ticket_class.order_confirmation_message' => $input['order_confirmation_message'],
 			    ];
 
 			    /**
