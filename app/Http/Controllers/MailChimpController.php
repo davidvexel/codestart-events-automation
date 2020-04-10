@@ -116,13 +116,17 @@ class MailChimpController extends Controller
 
 		// Subscribe Dan's email into this new audience
 		try {
-			$mailchimp->post('lists/'.$list['id'].'/members',
+			$subscription = $mailchimp->post('lists/'.$list['id'].'/members',
 				[
-					'email_address' => 'danielkahn58@gmail.com',
+					'email_address' => 'dmk354@nyu.edu',
 					'status' => 'subscribed',
 				]
 			);
 		} catch (\Exception $e) {
+			return redirect()->back()->with(['error' => 'Unable to subscribe email to new audience.']);
+		}
+
+		if (!isset($subscription['id']) || empty($subscription['id'])) {
 			return redirect()->back()->with(['error' => 'Unable to subscribe email to new audience.']);
 		}
 
@@ -150,11 +154,6 @@ class MailChimpController extends Controller
 
 		// Setup the required emails
 		$emails = [
-			[
-				'key' => 'welcome',
-				'title' => 'Webinar Welcome Email',
-				'subject' => 'You are confirmed for our Webinar',
-			],
 			[
 				'key' => 'weekBefore',
 				'title' => 'Webinar One Week Reminder',
@@ -184,7 +183,12 @@ class MailChimpController extends Controller
 				'title' => 'Follow Up',
 				'subject' => 'Our Webinar Follow Up',
 				'scheduledTo' => $dateUTC->addDays(1),
-			]
+			],
+			[
+				'key' => 'welcome',
+				'title' => 'Webinar Welcome Email',
+				'subject' => 'You are confirmed for our Webinar',
+			],
 		];
 
 		// 4. Create new templates using HTML
@@ -227,8 +231,8 @@ class MailChimpController extends Controller
 				);
 
 				// Schedule the campaign
-				if ($campaign && isset($campaign['id']) && isset($template['scheduledTo'])) {
-					$mailchimp->post(sprintf('/campaigns/%/actions/schedule'),
+				if ($campaign && isset($campaign['id']) && isset($email['scheduledTo'])) {
+					$mailchimp->post(sprintf('/campaigns/%s/actions/schedule', $campaign['id']),
 						[
 							'schedule_time' => $email['scheduledTo']->toIso8601String()
 						]
