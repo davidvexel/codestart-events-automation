@@ -45,6 +45,10 @@ class MailChimpController extends Controller
 		// Input name of the event
 		$name = $input['name'];
 
+		// Zoom ID
+		$zoom_id = $input['zoom_id'];
+		$zoom_url = 'https://us04web.zoom.us/j/' . str_replace(' ', '', $zoom_id);
+
 		/**
 		 * Try to create the date
 		 */
@@ -108,6 +112,18 @@ class MailChimpController extends Controller
          */
 		if (empty($list) || !isset($list['id'])) {
 			return redirect()->back()->with(['error' => 'Unable to create the MailChimp audience.']);
+		}
+
+		// Subscribe Dan's email into this new audience
+		try {
+			$mailchimp->post('lists/'.$list['id'].'/members',
+				[
+					'email_address' => 'danielkahn58@gmail.com',
+					'status' => 'subscribed',
+				]
+			);
+		} catch (\Exception $e) {
+			return redirect()->back()->with(['error' => 'Unable to subscribe email to new audience.']);
 		}
 
 		// 2. Create new templates folder
@@ -177,7 +193,7 @@ class MailChimpController extends Controller
 			// Get the HTML template and replace the date.
 			$html = view(
 				'emails.mailchimp-templates.' . $email['key'],
-				compact('name', 'date')
+				compact('name', 'date', 'zoom_id', 'zoom_url')
 			)->render();
 
 			// Create the template for the email

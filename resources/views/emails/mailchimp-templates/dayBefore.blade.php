@@ -602,7 +602,7 @@
                         <tbody><tr>
                             <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
                                 
-                                    <a href="https://us04web.zoom.us/j/337980407" title="" class="" target="_blank">
+                                    <a href="{{$zoom_url}}" title="" class="" target="_blank">
                                         <img align="center" alt="" src="https://gallery.mailchimp.com/964a8255a17bc18be34c64d59/images/9e2139f9-2512-4ec2-8359-29d5de518c51.jpg" width="564" style="max-width:600px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
                                     </a>
                                 
@@ -620,7 +620,7 @@
                     <tbody>
                         <tr>
                             <td align="center" valign="middle" class="mcnButtonContent" style="font-family: Helvetica; font-size: 18px; padding: 18px;">
-                                <a class="mcnButton " title="Join Webinar" href="https://us04web.zoom.us/j/337980407" target="_blank" style="font-weight: bold;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Join Webinar</a>
+                                <a class="mcnButton " title="Join Webinar" href="{{$zoom_url}}" target="_blank" style="font-weight: bold;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Join Webinar</a>
                             </td>
                         </tr>
                     </tbody>
@@ -650,13 +650,13 @@
 <span style="color:#000000">Just a reminder our online webinar is one week away on Wednesday, July 17th&nbsp;at 8pm EST/5 PM PST.<br>
 <br>
 Use the link below to join the webinar:</span><br>
-<a href="https://us04web.zoom.us/j/337980407">https://us04web.zoom.us/j/337980407</a><br>
+<a href="{{$zoom_url}}">{{$zoom_url}}</a><br>
 <br>
 <span style="color:#000000">Dial by your location </span><br>
 <br>
 <span style="color:#000000">+1 408 638 0968 US (San Jose)<br>
 +1 646 558 8656 US (New York)<br>
-<strong>Meeting ID: 337 980 407</strong></span><br>
+<strong>Meeting ID: {{ $zoom_id }}</strong></span><br>
 <br>
 <span style="color:#000000">We looking forward to seeing you next week!<br>
 <br>

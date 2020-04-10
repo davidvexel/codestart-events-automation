@@ -69,13 +69,17 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 offset-2">
-                                    <select class="form-control" name="timezone" id="">
+                                    <select class="form-control" name="timezone" id="" required>
                                         @foreach($timezones as $key => $timezone)
                                             <option value="{{ $key }}">{{ $timezone }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zoom_id">Zoom Meeting ID:</label>
+                            <input class="form-control" type="text" name="zoom_id" placeholder="Ex. 337 980 407" required>
                         </div>
                         <button type="submit" class="btn-dark btn-large btn">Send</button>
                     </form>
