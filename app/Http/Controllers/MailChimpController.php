@@ -220,6 +220,8 @@ class MailChimpController extends Controller
 							'title' => $email['title'],
 							'folder_id' => $campaignsFolder['id'],
 							'template_id' => $template['id'],
+							'from_name' => 'Codestart Academy',
+							'reply_to' => 'info@codestartacemy.com',
 						]
 					]
 				);
