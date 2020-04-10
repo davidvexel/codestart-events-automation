@@ -21,4 +21,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/events', 'EventController@create');
+Route::get('/eventbrite', 'EventbriteController@index')->name('eventbrite');
+Route::post('/eventbrite', 'EventbriteController@create');
+
+Route::get('/mailchimp', 'MailChimpController@index')->name('mailchimp');
+Route::post('/mailchimp', 'MailChimpController@create');
+

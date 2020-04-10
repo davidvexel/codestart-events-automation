@@ -23,15 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-    	/* List of timezones */
-    	$timezones = [
-		    'US/Alaska'   => "(GMT-09:00) Alaska",
-		    'US/Pacific'  => "(GMT-08:00) Pacific Time",
-		    'US/Mountain' => "(GMT-07:00) Mountain Time",
-		    'US/Central'  => "(GMT-06:00) Central Time",
-		    'US/Eastern'  => "(GMT-05:00) Eastern Time",
-	    ];
 
-        return view('home', compact('timezones'));
+        return view('home');
     }
 }
