@@ -895,7 +895,7 @@
                                                                 <p><span style="color:#000000">Hi </span>*|FNAME|*<span
                                                                             style="color:#000000">,</span><br>
                                                                     <br>
-                                                                    <span style="color:#000000">You're confirmed!&nbsp; We look forward to seeing you at our event: {{ $name }}, {{ $date->format('F jS h:i A') }}.</span><br>
+                                                                    <span style="color:#000000">You're confirmed!&nbsp; We look forward to seeing you at our event: {{ $name }}, {{ $date->format('F jS \a\t h:ia T') }}.</span><br>
                                                                     <br>
                                                                     <br>
                                                                     <span style="color:#000000">Use the link below to join the webinar:</span><br>
