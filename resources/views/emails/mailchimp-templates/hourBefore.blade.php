@@ -798,7 +798,7 @@
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 
-                                                                <h1><span style="font-size:30px">Our webinar is one week away!</span>
+                                                                <h1><span style="font-size:30px">Our webinar is in one hour!</span>
                                                                 </h1>
 
                                                             </td>
