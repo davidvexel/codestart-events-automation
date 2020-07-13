@@ -21,9 +21,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/eventbrite', 'EventbriteController@index')->name('eventbrite');
-Route::post('/eventbrite', 'EventbriteController@create');
+Route::get('/eventbrite', 'EventbriteController@index')->name('eventbrite')->middleware('auth');
+Route::post('/eventbrite', 'EventbriteController@create')->middleware('auth');
 
-Route::get('/mailchimp', 'MailChimpController@index')->name('mailchimp');
-Route::post('/mailchimp', 'MailChimpController@create');
+Route::get('/mailchimp', 'MailChimpController@index')->name('mailchimp')->middleware('auth');
+Route::get('/mailchimp/create/{folderId}', 'MailchimpController@createNewCampaigns')->middleware('auth');
+Route::post('/mailchimp', 'MailChimpController@create')->middleware('auth');
 
