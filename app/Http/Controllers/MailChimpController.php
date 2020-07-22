@@ -113,7 +113,7 @@ class MailChimpController extends Controller
 		}
 
 		// Create the automation
-		$this->createAutomation($mailchimp, $list);
+		// $this->createAutomation($mailchimp, $list);
 
 		// 2. Create new templates folder
 		$templatesFolder = $this->createTemplatesFolder($mailchimp, $nameAndDate);
