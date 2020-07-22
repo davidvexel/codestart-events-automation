@@ -112,6 +112,9 @@ class MailChimpController extends Controller
 			return redirect()->back()->with(['error' => 'Unable to subscribe email to new audience.']);
 		}
 
+		// Create the automation
+		$this->createAutomation($mailchimp, $list);
+
 		// 2. Create new templates folder
 		$templatesFolder = $this->createTemplatesFolder($mailchimp, $nameAndDate);
 
@@ -366,5 +369,31 @@ class MailChimpController extends Controller
 		}
 
 		return $campaigns;
+	}
+
+	/**
+	 * Create the automation with a single welcome email
+	 *
+	 * @param $mailchimp
+	 * @param $list
+	 */
+	public function createAutomation($mailchimp, $list)
+	{
+		$automation = $mailchimp->post('/automations',
+			[
+				'recipients' => [
+					'list_id' => $list['id'],
+				],
+				'settings' => [
+					'from_name' => 'Codestart Academy',
+					'reply_to' => 'info@codestartacademy.com',
+				],
+				'trigger_settings' => [
+					'workflow_type' => 'singleWelcome',
+				],
+			]
+		);
+
+		return $automation;
 	}
 }
