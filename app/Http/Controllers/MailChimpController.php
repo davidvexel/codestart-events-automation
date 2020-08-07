@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Event;
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use \DrewM\MailChimp\MailChimp;
-use PhpParser\Node\Expr\Array_;
 
 class MailChimpController extends Controller
 {
@@ -135,30 +133,12 @@ class MailChimpController extends Controller
 		// 4. Create new templates using HTML
 		// Loop the required emails and create templates
 		foreach ($emails as $email) {
-			/**
-			 * Get the HTML content of the campaign to create the new one
-			 * @see https://mailchimp.com/developer/reference/campaigns/campaign-content/
-			 */
-			$response = $mailchimp->get('campaigns/'. $email['id'] . '/content');
-			$html = '<html>Content of the template</html>';
-
-			if ($response['html']) {
-				$html = $response['html'];
-			}
-
-			/**
-			 * Find and replace the custom fields in the template
-			 */
-			foreach($input['customFieldKeys'] as $index => $customFieldKey) {
-				if ( !empty($customFieldKey) && !empty($input['customFieldValues'][$index]) ) {
-					$html = str_replace($customFieldKey, $input['customFieldValues'][$index], $html);
-				}
-			}
+			$html = $this->getCampaignHtmlTemplate($mailchimp, $email, $input);
 
 			// Create the template for the email
 			$template = $mailchimp->post('/templates',
 				[
-					'name' => $email['title'],
+					'name' => substr($email['title'], 0, 40),
 					'folder_id' => $templatesFolder['id'],
 					'html' => $html,
 				]
@@ -395,5 +375,40 @@ class MailChimpController extends Controller
 		);
 
 		return $automation;
+	}
+
+	/**
+	 * Get the HTML template
+	 * 
+	 * @param $mailchimp
+	 * @param $email
+	 * @param $input
+	 * @return mixed|string
+	 * @throws \Exception
+	 */
+	public function getCampaignHtmlTemplate($mailchimp, $email, $input) {
+		$html = '<html>Content of the template</html>';
+		/**
+		 * Get the HTML content of the campaign to create the new one
+		 * @see https://mailchimp.com/developer/reference/campaigns/campaign-content/
+		 */
+		try {
+			$response = $mailchimp->get('campaigns/'. $email['id'] . '/content');
+		} catch (\Exception $e) {
+			throw $e;
+		}
+
+		$html = $response['html'];
+
+		/**
+		 * Find and replace the custom fields in the template
+		 */
+		foreach($input['customFieldKeys'] as $index => $customFieldKey) {
+			if ( !empty($customFieldKey) && !empty($input['customFieldValues'][$index]) ) {
+				$html = str_replace($customFieldKey, $input['customFieldValues'][$index], $html);
+			}
+		}
+
+		return $html;
 	}
 }
